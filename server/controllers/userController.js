@@ -13,10 +13,10 @@ userController.register = async (request, h) => {
 
     // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
     let userExist = await userModel.findOne({});
-    if (!userExist) {
-        console.log("ok");
-        await userService.enterFirstUser();
-    }
+    // if (!userExist) {
+    //     console.log("ok");
+    //     await userService.enterFirstUser();
+    // }
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
     console.log("emailchecked");
@@ -38,29 +38,29 @@ userController.register = async (request, h) => {
 
     console.log('uploadfile function reached');
     // console.log(payload);
-    const imgName = payload.image.hapi.filename;
-    const sgnName = payload.sign.hapi.filename;
+   let imgName = payload.image.hapi.filename;
+   let sgnName = payload.sign.hapi.filename;
     console.log(imgName + " " + sgnName);
     // if (payload.image && payload.sign) {
     // console.log("if reached");
-    const lastImageNo = await imageNo.findOne({});
+    let lastImageNo = await imageNo.findOne({});
     console.log(lastImageNo);
     if (!lastImageNo) {
         console.log(" imageno does not exist so entering first imageno ...")
-        await userService.enterFirstImageNo(1);
+        lastImageNo = await userService.enterFirstImageNo(1);
         console.log("first imageno. entered");
     }
-    const newImageNo = lastImageNo.imageNo + 1;
+    let newImageNo = lastImageNo.imageNo + 1;
     console.log(newImageNo);
     await imageNo.findOneAndUpdate({ imageNo: lastImageNo.imageNo }, { imageNo: newImageNo });
-    const imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
-    const signName = newImageNo + sgnName.substr(sgnName.lastIndexOf('.'));
+    let imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
+    let signName = newImageNo + sgnName.substr(sgnName.lastIndexOf('.'));
     console.log("name of the file " + "" + imageName + "" + signName);
-    const imagePath = __dirname + "/imageUploads/" + imageName;
-    const signPath = __dirname + "/signUploads/" + signName;
+    let imagePath = __dirname + "/imageUploads/" + imageName;
+    let signPath = __dirname + "/signUploads/" + signName;
     console.log(imagePath + signName);
-    const imageFile = fs.createWriteStream(imagePath);
-    const signFile = fs.createWriteStream(signPath);
+  let imageFile = fs.createWriteStream(imagePath);
+    let signFile = fs.createWriteStream(signPath);
 
     imageFile.on('error', (err) => console.error(err));
     signFile.on('error', (err) => console.error(err));
@@ -68,7 +68,7 @@ userController.register = async (request, h) => {
     payload.sign.pipe(signFile);
 
     imageFile.on('end', (err) => {
-        const ret = {
+        let ret = {
             filename: payload.image.hapi.filename,
             headers: payload.image.hapi.headers
         }
