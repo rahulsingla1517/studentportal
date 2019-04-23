@@ -1,12 +1,12 @@
 const Mongoose = require('mongoose');
 
 
-let lastImageNo= new Mongoose.Schema({
-    lastImageNo:{
+let imageNo = new Mongoose.Schema({
+    imageNo: {
         type: Number,
-        // required: true
+        required: true
     }
 
 });
 
-module.exports = Mongoose.model('lastImageNo', lastImageNo);
+module.exports = Mongoose.model('lastImageNo', imageNo);
