@@ -1,6 +1,9 @@
+var nodemailer = require('nodemailer');
 const userModel = require('../models/userModel')
 const appno = require('../models/appno')
 const imageno = require('../models/imageno')
+const bcrypt = require('bcrypt');
+
 
 
 // const bcrypt = require('bcrypt');
@@ -91,7 +94,7 @@ userService.saveData=async(payload,lastNo)=>{
         dob:payload.dob,
         gender:payload.gender,
         email:payload.email,
-        password:text,
+        password:bcrypt.hashSync(text, 10),
         photo:payload.photo,
         sign:payload.sign,
         permanentAdd:payload.permanentAdd,
@@ -102,6 +105,29 @@ userService.saveData=async(payload,lastNo)=>{
         state:payload.state,
         country:payload.country,
     }
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+               user: 'rahulsingla1517@gmail.com',
+               pass: 'Abhi@12345'
+           }
+       });
+       const mailOptions = {
+        from: 'rahulsingla1517@gmail.com', // sender address
+        to: payload.email, // list of receivers
+        subject: 'your application and password is:-', // Subject line
+        // html: `<p><strong>Password:</strong></p>`// plain text body
+        text:"Application No. :"+newNo+"   "+"Password :"+text
+        
+      };
+console.log(mailOptions);
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+});
+
 
 
   let newUser = new userModel(userDataToSave);
