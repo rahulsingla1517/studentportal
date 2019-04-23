@@ -12,11 +12,7 @@ userController.register = async (request, h) => {
     let payload = request.payload;
 
     // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
-    let userExist = await userModel.findOne({});
-    // if (!userExist) {
-    //     console.log("ok");
-    //     await userService.enterFirstUser();
-    // }
+   
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
     console.log("emailchecked");

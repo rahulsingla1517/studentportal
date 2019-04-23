@@ -24,37 +24,7 @@ userService.checkEmail = async (email) => {
         console.log("email exists")
     }
 }
-userService.enterFirstUser = async () => {
-    userDataToSave = {
-        appNo: 100000,
-        name: "string",
-        fName: "string",
-        mName: "string",
-        dob: Date.now(),
-        gender: "string",
-        password: "abc123",
-        photo: "string",
-        sign: "string",
-        pincode: 34153,
-        city: "string",
-        phone: 0,
-        state: "string",
-        permanentAdd: "string",
-        tempAdd: "string",
-        email: "string"
-    }
-    let newUser = new userModel(userDataToSave);
-    console.log("user about to save ");
-    console.log(newUser);
-    try {
-        let user = await newUser.save();
-    }
-    catch (err) {
-        console.log(err);
-    }
-    console.log("user added");
 
-}
 userService.enterFirstAppNo = async (num) => {
     let userDataToSave = {
         lastNo: num,
