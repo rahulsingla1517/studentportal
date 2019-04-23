@@ -11,12 +11,6 @@ userController.register = async (request, h) => {
     console.log("usercontroller reached");
     let payload = request.payload;
 
-    // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
-    let userExist = await userModel.findOne({});
-    if (!userExist) {
-        console.log("ok");
-        await userService.enterFirstUser();
-    }
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
     console.log("emailchecked");
@@ -43,14 +37,14 @@ userController.register = async (request, h) => {
     console.log(imgName + " " + sgnName);
     // if (payload.image && payload.sign) {
     // console.log("if reached");
-    const lastImageNo = await imageNo.findOne({});
+    let lastImageNo = await imageNo.findOne({});
     console.log(lastImageNo);
     if (!lastImageNo) {
         console.log(" imageno does not exist so entering first imageno ...")
-        await userService.enterFirstImageNo(1);
+        let lastImageNo=await userService.enterFirstImageNo(1);
         console.log("first imageno. entered");
     }
-    const newImageNo = lastImageNo.imageNo + 1;
+    let newImageNo = lastImageNo.imageNo + 1;
     console.log(newImageNo);
     await imageNo.findOneAndUpdate({ imageNo: lastImageNo.imageNo }, { imageNo: newImageNo });
     const imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
