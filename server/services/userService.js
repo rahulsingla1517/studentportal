@@ -1,12 +1,11 @@
-var nodemailer = require('nodemailer');
+
 const userModel = require('../models/userModel')
 const appno = require('../models/appno')
 const imageno = require('../models/imageno')
 const bcrypt = require('bcrypt');
+const commonFunctions = require('../utils/commonFunctions');
+const CONFIG = require('../config');
 
-
-
-// const bcrypt = require('bcrypt');
 const userService = {};
 
 /*
@@ -32,14 +31,15 @@ userService.enterFirstAppNo = async (num) => {
 
     let newUser = new appno(userDataToSave);
     let user = await newUser.save();
-    console.log("first appno." + user);
+    console.log("first appno. in userservice" + user);
+    return user ; 
 }
 userService.enterFirstImageNo = async (num) => {
     imageNoToSave = {
         imageNo: num
     }
     let newImageNO = new imageno(imageNoToSave)
-    let imageNum = await newImageNO.save();
+   return await newImageNO.save();
     console.log(" frist image no. is " + " " + imageNum);
 },
     userService.saveData = async (payload, lastNo, imagePath, signPath) => {
@@ -49,75 +49,65 @@ userService.enterFirstImageNo = async (num) => {
         //   }
 
         // let lastNo =await appno.findOne({});
-        let newNo = lastNo.lastNo + 1;
+        let newNo = lastNo.lastNo + CONFIG.SERVER.constant;
         console.log(newNo);
         await appno.findOneAndUpdate({ lastNo: lastNo.lastNo }, { lastNo: newNo });
 
 
 
         var text = "";
-        var length = 6;
+        var length = CONFIG.SERVER.passLength;
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (var i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
         console.log("pass" + text);
 
+
+
         let userDataToSave = {
             appNo: newNo,
             name: payload.name,
-            fName: payload.fName,
-            mName: payload.mName,
+            fatherName: payload.fatherName,
+            motherName: payload.motherName,
             dob: payload.dob,
             gender: payload.gender,
             email: payload.email,
             password: bcrypt.hashSync(text, 10),
             photo: imagePath,
             sign: signPath,
-            permanentAdd: payload.permanentAdd,
-            tempAdd: payload.tempAdd,
-            phone: payload.phone,
-            city: payload.city,
-            pincode: payload.pincode,
-            state: payload.state,
-            country: payload.country,
+            permanentAdd:{ 
+                address:payload.permanentAdd.address,  
+                city: payload.permanentAdd.city,
+                pincode: payload.permanentAdd.pincode,
+                state: payload.permanentAdd.state,
+            },
+            tempAdd:{ 
+                address:payload.tempAdd.address,  
+                city: payload.tempAdd.city,
+                pincode: payload.tempAdd.pincode,
+                state: payload.tempAdd.state,
+            }
+         
+            
         }
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'rahulsingla1517@gmail.com',
-                pass: 'Abhi@12345'
-            }
-        });
-        const mailOptions = {
-            from: 'rahulsingla1517@gmail.com', // sender address
-            to: payload.email, // list of receivers
-            subject: 'your application and password is:-', // Subject line
-            // html: `<p><strong>Password:</strong></p>`// plain text body
-            text: "Application No. :" + newNo + "   " + "Password :" + text
-
-        };
-        console.log(mailOptions);
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                return console.log(error);
-            }
-            console.log('Message sent: ' + info.response);
-        });
-
-
+        let emailData={
+            email:payload.email,
+            pass:text,
+            appNo:newNo,
+            name:payload.name
+        }
 
 
         let newUser = new userModel(userDataToSave);
         try {
-            let user = await newUser.save();
+            await newUser.save();
         } catch (err) {
             console.log(err);
-            console.log("ok");
-            console.log("okoko")
-        }
+                 }
         console.log("successful");
-        return { statusCode: 200, message: "user registered", userDetails: newUser }
+        commonFunctions.sendEmail(emailData);
+        return { statusCode: 200, message: `User registered successfully and its User number and password is send to ${payload.email}`, userDetails: newUser }
 
 
     }

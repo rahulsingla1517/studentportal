@@ -31,7 +31,6 @@ const userRoutes = [{
             }
         },
         payload: {
-          
 
             output: 'stream',
             parse: true,

@@ -3,6 +3,8 @@ const imageNo = require('../models/imageno');
 const appno = require('../models/appno');
 const userModel = require('../models/userModel');
 const fs = require('fs');
+const CONFIG = require('../config');
+
 
 let userController = {};
 
@@ -23,13 +25,14 @@ userController.register = async (request, h) => {
     console.log("email not in use");
 
     // TO CHECK IF APP NO. IS PRESENT IN APP COLLECTION
-    let firstAppNO = await appno.findOne({});
-    if (!firstAppNO) {
-        await userService.enterFirstAppNo(100000);
-        console.log("first app no. is entered")
+    let firstAppNo = await appno.findOne({});
+    if (!firstAppNo) {
+        firstAppNo = await userService.enterFirstAppNo(CONFIG.SERVER.firstAppNo);
+        console.log("app no. is");
+        console.log(firstAppNo);
     }
     console.log("app no. is exist");
-
+    console.log(firstAppNo);
     //  FUNCTION TO SAVE IMAGE AND SIGN INTO UPLOADS FOLDER
 
     console.log('uploadfile function reached');
@@ -43,10 +46,11 @@ userController.register = async (request, h) => {
     console.log(lastImageNo);
     if (!lastImageNo) {
         console.log(" imageno does not exist so entering first imageno ...")
-        lastImageNo = await userService.enterFirstImageNo(1);
+        lastImageNo = await userService.enterFirstImageNo(CONFIG.SERVER.constant);
         console.log("first imageno. entered");
     }
-    let newImageNo = lastImageNo.imageNo + 1;
+    console.log(lastImageNo);
+    let newImageNo = lastImageNo.imageNo + CONFIG.SERVER.constant;
     console.log(newImageNo);
     await imageNo.findOneAndUpdate({ imageNo: lastImageNo.imageNo }, { imageNo: newImageNo });
     let imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
@@ -55,7 +59,7 @@ userController.register = async (request, h) => {
     let imagePath = __dirname + "/imageUploads/" + imageName;
     let signPath = __dirname + "/signUploads/" + signName;
     console.log(imagePath + signName);
-  let imageFile = fs.createWriteStream(imagePath);
+    let imageFile = fs.createWriteStream(imagePath);
     let signFile = fs.createWriteStream(signPath);
 
     imageFile.on('error', (err) => console.error(err));
@@ -85,10 +89,10 @@ userController.register = async (request, h) => {
 
 
 
-
+    console.log(firstAppNo);
 
     // DATA SEND TO BE SAVED INTO DATABASE
-    let response = await userService.saveData(payload, firstAppNO, imagePath, signPath);
+    let response = await userService.saveData(payload, firstAppNo, imagePath, signPath);
     return response;
 
 }
