@@ -1,20 +1,48 @@
+
 const userService = require('../services/userService');
 const imageNo = require('../models/imageno');
 const appno = require('../models/appno');
 const userModel = require('../models/userModel');
 const fs = require('fs');
 const CONFIG = require('../config');
+const bcrypt = require('bcrypt');
 
 
 let userController = {};
+userController.login = async (request, h) => {
+    let payload = request.payload;
+    console.log(payload);
+    let user = await userService.checkUser(payload.appNo);
+    if (!user) {
+        return { statusCode: 404, message: "User not found" };
+    }
+    console.log("user found & password to be checked...");
+    let password = payload.password;
+    let hash = user.password;
+    console.log(password + hash)
 
+    let passMatch = await bcrypt.compareSync(password, hash);
+    console.log(passMatch);
+    if (!passMatch) {
+        return { statusCode: 401, message: " password Entered is not correct" }
+    }
+    // delete user.appNo;
+    // delete user.password;
+    // delete user._id;
+    // delete user.__v;""
+    delete user["password",;
+    console.log(user);
+
+    return (user);
+
+}
 
 userController.register = async (request, h) => {
     console.log("usercontroller reached");
     let payload = request.payload;
 
     // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
-   
+
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
     console.log("emailchecked");
@@ -37,8 +65,8 @@ userController.register = async (request, h) => {
 
     console.log('uploadfile function reached');
     // console.log(payload);
-   let imgName = payload.image.hapi.filename;
-   let sgnName = payload.sign.hapi.filename;
+    let imgName = payload.image.hapi.filename;
+    let sgnName = payload.sign.hapi.filename;
     console.log(imgName + " " + sgnName);
     // if (payload.image && payload.sign) {
     // console.log("if reached");

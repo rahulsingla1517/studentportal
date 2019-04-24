@@ -24,14 +24,14 @@ const userRoutes = [{
                 motherName: Joi.string().required(),
                 dob: Joi.date().required(),
                 gender: Joi.string().required(),
-                permanentAdd: Joi.object({address:Joi.string().required(),country:Joi.string().required(),city:Joi.string(),state:Joi.string().required(),pincode:Joi.string().required()}),
-                tempAdd:Joi.object({address:Joi.string().required(),country:Joi.string().required(),city:Joi.string(),state:Joi.string().required(),pincode:Joi.string().required()}),
+                permanentAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
+                tempAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
                 email: Joi.string().required(),
 
             }
         },
         payload: {
-          
+
 
             output: 'stream',
             parse: true,
@@ -40,9 +40,29 @@ const userRoutes = [{
     }
 },
 {
-    method: 'GETT',
-    path: '/user',
-    handler: userController.register,  
+    method: 'POST',
+    path: '/user/login',
+    handler: userController.login,
+    options: {
+        tags: ['api'],
+        // plugins: {
+        //     'hapi-swagger': {
+        //         payloadType: 'form',
+        //         responseMessages: [
+        //             { 'code': 500, 'message': 'Internal Server Error' }
+        //         ]
+        //     }
+        // },
+        validate: {
+            payload: {
+                appNo: Joi.number().required(),
+                password: Joi.string().required()
+
+            }
+        }
+
+
+    }
 
 }]
 module.exports = userRoutes;

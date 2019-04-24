@@ -23,6 +23,18 @@ userService.checkEmail = async (email) => {
         console.log("email exists")
     }
 }
+userService.checkUser = async (userNo) => {
+    try {
+        console.log("checkuser reached" + userNo);
+        let userExit = await userModel.findOne({ appNo: userNo }).lean();
+        console.log(userExit);
+        return userExit;
+    }
+    catch (err) {
+        console.log("user exists")
+    }
+}
+
 
 userService.enterFirstAppNo = async (num) => {
     let userDataToSave = {
@@ -32,14 +44,14 @@ userService.enterFirstAppNo = async (num) => {
     let newUser = new appno(userDataToSave);
     let user = await newUser.save();
     console.log("first appno. in userservice" + user);
-    return user ; 
+    return user;
 }
 userService.enterFirstImageNo = async (num) => {
     imageNoToSave = {
         imageNo: num
     }
     let newImageNO = new imageno(imageNoToSave)
-   return await newImageNO.save();
+    return await newImageNO.save();
     console.log(" frist image no. is " + " " + imageNum);
 },
     userService.saveData = async (payload, lastNo, imagePath, signPath) => {
@@ -76,26 +88,29 @@ userService.enterFirstImageNo = async (num) => {
             password: bcrypt.hashSync(text, 10),
             photo: imagePath,
             sign: signPath,
-            permanentAdd:{ 
-                address:payload.permanentAdd.address,  
+            permanentAdd: {
+                address: payload.permanentAdd.address,
                 city: payload.permanentAdd.city,
                 pincode: payload.permanentAdd.pincode,
                 state: payload.permanentAdd.state,
+                country: payload.permanentAdd.country
             },
-            tempAdd:{ 
-                address:payload.tempAdd.address,  
+            tempAdd: {
+                address: payload.tempAdd.address,
                 city: payload.tempAdd.city,
                 pincode: payload.tempAdd.pincode,
                 state: payload.tempAdd.state,
-            }
-         
-            
+                country: payload.tempAdd.country
+            },
+
+
+
         }
-        let emailData={
-            email:payload.email,
-            pass:text,
-            appNo:newNo,
-            name:payload.name
+        let emailData = {
+            email: payload.email,
+            pass: text,
+            appNo: newNo,
+            name: payload.name
         }
 
 
@@ -104,7 +119,7 @@ userService.enterFirstImageNo = async (num) => {
             await newUser.save();
         } catch (err) {
             console.log(err);
-                 }
+        }
         console.log("successful");
         commonFunctions.sendEmail(emailData);
         return { statusCode: 200, message: `User registered successfully and its User number and password is send to ${payload.email}`, userDetails: newUser }
