@@ -24,9 +24,6 @@ const userRoutes = [{
                 mName: Joi.string().required(),
                 dob: Joi.date().required(),
                 gender: Joi.string().required(),
-                // password:Joi.string().required(),
-                // photo:Joi.string().required(),
-                // sign:Joi.string().required(),
                 pincode: Joi.number().required(),
                 city: Joi.string().required(),
                 phone: Joi.number().required(),
@@ -38,6 +35,7 @@ const userRoutes = [{
             }
         },
         payload: {
+          
 
             output: 'stream',
             parse: true,
