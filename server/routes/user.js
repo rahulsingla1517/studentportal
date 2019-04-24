@@ -38,5 +38,11 @@ const userRoutes = [{
             allow: 'multipart/form-data'
         }
     }
+},
+{
+    method: 'GETT',
+    path: '/user',
+    handler: userController.register,  
+
 }]
 module.exports = userRoutes;
