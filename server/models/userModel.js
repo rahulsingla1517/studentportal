@@ -9,11 +9,11 @@ let studPortal = new Mongoose.Schema({
         type: String,
         required: true
 	},
-	fName: {
+	fatherName: {
 		type: String,
 		required: true
     },
-    mName:{
+    motherName:{
         type: String,
         required: true
     },
@@ -35,37 +35,60 @@ let studPortal = new Mongoose.Schema({
     },
     photo:{
         type: String,
-        // required: true
+     required: true
     },
     sign:{
         type: String,
-        // required: true
+        required: true
     },
     permanentAdd:{
-        type: String,
-        required: true
+        address:{
+            type: String,
+            required: true
+        },
+        
+        city:{
+            type:String,
+        },
+        pincode:{
+            type: String,
+            required:true
+        },
+        state:{
+             type:String,
+             required:true
+        },
+        country:{
+            type:String,
+             required:true
+        }
+    
+
     },
     tempAdd:{
-        type: String,
-        required: true
+        address:{
+            type: String,
+            required: true
+        },
+        
+        city:{
+            type:String,
+        },
+        pincode:{
+            type: String,
+            required:true
+        },
+        state:{
+             type:String,
+             required:true
+        },
+        country:{
+            type:String,
+             required:true
+        }
+        
     },
-    pincode:{
-        type: Number,
-        required:true
-    },
-    city:{
-        type:String,
-        required:true
-    },
-    phone:{
-        type:Number,
-        required:true,
-    },
-    state:{
-        type:String,
-        required:true
-    },
-
+   
 
 });
 module.exports = Mongoose.model('user', studPortal);

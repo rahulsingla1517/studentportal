@@ -1,1 +1,3 @@
 node_modules
+server/conrollers/imageUploads/*
+server/conrollers/signUploads/*
