@@ -26,11 +26,10 @@ userController.login = async (request, h) => {
     if (!passMatch) {
         return { statusCode: 401, message: " password Entered is not correct" }
     }
-    // delete user.appNo;
-    // delete user.password;
-    // delete user._id;
-    // delete user.__v;""
-    delete user["password",;
+    delete user.appNo;
+    delete user.password;
+    delete user._id;
+    delete user.__v;
     console.log(user);
 
     return (user);
