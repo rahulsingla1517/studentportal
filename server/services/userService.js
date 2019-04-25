@@ -86,8 +86,8 @@ userService.enterFirstImageNo = async (num) => {
             gender: payload.gender,
             email: payload.email,
             password: bcrypt.hashSync(text, 10),
-            photo: imagePath,
-            sign: signPath,
+            photo: "https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ imagePath,
+            sign:"https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ signPath,
             permanentAdd: {
                 address: payload.permanentAdd.address,
                 city: payload.permanentAdd.city,
