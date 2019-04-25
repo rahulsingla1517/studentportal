@@ -5,7 +5,7 @@ const userRoutes = [{
     path: '/user',
     handler: userController.register,
     options:
-    {
+    {   auth: 'token',
         tags: ['api'],
         plugins: {
             'hapi-swagger': {
@@ -45,14 +45,7 @@ const userRoutes = [{
     handler: userController.login,
     options: {
         tags: ['api'],
-        // plugins: {
-        //     'hapi-swagger': {
-        //         payloadType: 'form',
-        //         responseMessages: [
-        //             { 'code': 500, 'message': 'Internal Server Error' }
-        //         ]
-        //     }
-        // },
+        auth: 'false',
         validate: {
             payload: {
                 appNo: Joi.number().required(),
@@ -63,6 +56,18 @@ const userRoutes = [{
 
 
     }
+}
+,
+{
+    method: 'GET',
+    path: '/user/login',
+    handler: userController.fetchData,
+    options: {
+        tags: ['api'],
+        auth: 'false',
+       
 
+
+    }
 }]
 module.exports = userRoutes;

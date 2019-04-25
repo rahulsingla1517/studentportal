@@ -9,6 +9,22 @@ const bcrypt = require('bcrypt');
 
 
 let userController = {};
+userController.fetchData= async(request,h)=>{
+    // funcion to validate token 
+    
+    
+    var header=request.header;
+
+     //if validate then rest code 
+    let user = await userService.checkUser(payload.appNo);
+    delete user.appNo;
+    delete user.password;
+    delete user._id;
+    delete user.__v;
+    console.log(user);
+     return (user);
+    
+}
 userController.login = async (request, h) => {
     let payload = request.payload;
     console.log(payload);
@@ -26,13 +42,10 @@ userController.login = async (request, h) => {
     if (!passMatch) {
         return { statusCode: 401, message: " password Entered is not correct" }
     }
-    delete user.appNo;
-    delete user.password;
-    delete user._id;
-    delete user.__v;
-    console.log(user);
+    //function to generate jwt  
 
-    return (user);
+
+   // return (jwt); response send will be JWT
 
 }
 
