@@ -5,6 +5,7 @@ const imageno = require('../models/imageno')
 const bcrypt = require('bcrypt');
 const commonFunctions = require('../utils/commonFunctions');
 const CONFIG = require('../config');
+const jwt = require('jsonwebtoken');
 
 const userService = {};
 
@@ -33,6 +34,11 @@ userService.checkUser = async (userNo) => {
     catch (err) {
         console.log("user exists")
     }
+}
+userService.generateToken=async(payload)=>{
+    var token = jwt.sign({appNo: payload.appNo,password: payload.password }, CONFIG.SERVER.privateKey, { algorithm: 'HS256'} );
+    console.log(token);
+    return token;
 }
 
 

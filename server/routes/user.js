@@ -5,7 +5,8 @@ const userRoutes = [{
     path: '/user',
     handler: userController.register,
     options:
-    {   auth: 'token',
+    {  
+        //  auth: 'token',
         tags: ['api'],
         plugins: {
             'hapi-swagger': {
@@ -45,7 +46,7 @@ const userRoutes = [{
     handler: userController.login,
     options: {
         tags: ['api'],
-        auth: 'false',
+        auth: false,
         validate: {
             payload: {
                 appNo: Joi.number().required(),
@@ -64,7 +65,7 @@ const userRoutes = [{
     handler: userController.fetchData,
     options: {
         tags: ['api'],
-        auth: 'false',
+        auth: false,
        
 
 

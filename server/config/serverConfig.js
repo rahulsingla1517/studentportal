@@ -10,6 +10,7 @@ const SERVER_CONFIG = {
   constant:1,
   passLength:6,
   firstAppNo:100000,
+  privateKey:'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc',
 };
 
 module.exports = SERVER_CONFIG;
