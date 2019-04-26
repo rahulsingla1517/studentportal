@@ -9,6 +9,15 @@ const bcrypt = require('bcrypt');
 
 
 let userController = {};
+
+userController.userImage=async(request,h)=>{
+return h.file(request.params.imagepath);
+}
+userController.signImage=async(request,h)=>{
+  return h.file(request.params.signpath)
+
+}
+
 userController.fetchData= async(request,h)=>{
     let user = request.user;
     console.log(user);
@@ -21,6 +30,11 @@ userController.fetchData= async(request,h)=>{
 
      //if validate then rest code 
     // let user = await userService.checkUser(payload.appNo);
+    // let header=request.headers;
+    // console.log(header.token);
+
+    //if validate then rest code 
+    // let user = await userService.checkUser(header.token)
     delete user.appNo;
     delete user.password;
     delete user._id;

@@ -16,28 +16,27 @@ return email existence
 */
 userService.checkEmail = async (email) => {
     try {
-        let emailExit = await userModel.findOne({ email: email });
-        console.log(emailExit);
-        return emailExit;
+        let emailExist = await userModel.findOne({ email: email });
+        console.log(emailExist);
+        return emailExist;
     }
     catch (err) {
-        console.log("email exists")
+        console.log(err)
     }
 }
 userService.checkUser = async (userNo) => {
     try {
         console.log("checkuser reached" + userNo);
-        let userExit = await userModel.findOne({ appNo: userNo }).lean();
-        console.log(userExit);
-        return userExit;
+        let userExist = await userModel.findOne({ appNo: userNo }).lean();
+        console.log(userExist);
+        return userExist;
     }
     catch (err) {
-        console.log("user exists")
+        console.log(err)
     }
 }
-userService.generateToken=async(payload)=>{
-    console.log(payload);
-    var token = jwt.sign({_id: payload}, CONFIG.SERVER.privateKey, { algorithm: 'HS256'} );
+userService.generateToken = async (id) => {
+    var token = jwt.sign({_id:id }, CONFIG.SERVER.privateKey, { algorithm: 'HS256' });
     console.log(token);
     return token;
 }
@@ -93,8 +92,8 @@ userService.enterFirstImageNo = async (num) => {
             gender: payload.gender,
             email: payload.email,
             password: bcrypt.hashSync(text, 10),
-            photo: "https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ imagePath,
-            sign:"https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ signPath,
+            photo: imagePath,
+            sign: signPath,
             permanentAdd: {
                 address: payload.permanentAdd.address,
                 city: payload.permanentAdd.city,

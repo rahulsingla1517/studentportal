@@ -5,7 +5,7 @@ const userRoutes = [{
     path: '/user',
     handler: userController.register,
     options:
-    {  
+    {
         //  auth: 'token',
         tags: ['api'],
         plugins: {
@@ -18,8 +18,8 @@ const userRoutes = [{
         },
         validate: {
             payload: {
-                image: Joi.any().meta({ swaggerType: 'file' }).description('file').required(),
-                sign: Joi.any().meta({ swaggerType: 'file' }).description('file').required(),
+                image: Joi.any().meta({ swaggerType: 'file' }).description('user image').required(),
+                sign: Joi.any().meta({ swaggerType: 'file' }).description('signature image').required(),
                 name: Joi.string().required(),
                 fatherName: Joi.string().required(),
                 motherName: Joi.string().required(),
@@ -27,7 +27,7 @@ const userRoutes = [{
                 gender: Joi.string().required(),
                 permanentAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
                 tempAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
-                email: Joi.string().required(),
+                email: Joi.string().email().required(),
 
             }
         },
@@ -58,10 +58,12 @@ const userRoutes = [{
 
     }
 }
-,
+    ,
 {
     method: 'GET',
     path: '/user/login',
+    handler: userController.fetchData,
+
     options: {
         tags: ['api'],
         auth: 'userAuth',
@@ -73,6 +75,35 @@ const userRoutes = [{
         
        
 
+    }
+},
+{
+    method: 'GET',
+    path: '/user/userimage/{imagepath}',
+    handler: userController.userImage,
+    options: {
+        tags: ['api'],
+        auth: false,
+        validate: {
+            params: {
+                imagepath: Joi.string()
+            }
+        }
+
+    }
+},
+{
+    method: 'GET',
+    path: '/user/signimage/{signpath}',
+    handler: userController.signImage,
+    options: {
+        tags: ['api'],
+        auth: false,
+        validate: {
+            params: {
+                signpath: Joi.string()
+            }
+        }
 
     },
     handler: userController.fetchData,
