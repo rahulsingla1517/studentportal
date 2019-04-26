@@ -35,8 +35,8 @@ userService.checkUser = async (userNo) => {
         console.log(err)
     }
 }
-userService.generateToken=async(payload)=>{
-    var token = jwt.sign({appNo: payload.appNo,password: payload.password }, CONFIG.SERVER.privateKey, { algorithm: 'HS256'} );
+userService.generateToken = async (id) => {
+    var token = jwt.sign({_id:id }, CONFIG.SERVER.privateKey, { algorithm: 'HS256' });
     console.log(token);
     return token;
 }
@@ -92,8 +92,8 @@ userService.enterFirstImageNo = async (num) => {
             gender: payload.gender,
             email: payload.email,
             password: bcrypt.hashSync(text, 10),
-            photo: "https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ imagePath,
-            sign:"https://"+CONFIG.SERVER.host + "/" + CONFIG.SERVER.port+ signPath,
+            photo: imagePath,
+            sign: signPath,
             permanentAdd: {
                 address: payload.permanentAdd.address,
                 city: payload.permanentAdd.city,

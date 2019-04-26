@@ -9,21 +9,29 @@ const bcrypt = require('bcrypt');
 
 
 let userController = {};
+
+userController.userImage=async(request,h)=>{
+return h.file(request.params.imagepath);
+}
+userController.signImage=async(request,h)=>{
+  return h.file(request.params.signpath)
+
+}
+
 userController.fetchData= async(request,h)=>{
     // funcion to validate token 
     
     
-    var header=request.header;
+    let header=request.headers;
+    console.log(header.token);
 
-     //if validate then rest code 
-    let user = await userService.checkUser(header.appNo)
+    //if validate then rest code 
+    let user = await userService.checkUser(header.token)
     delete user.appNo;
     delete user.password;
     delete user._id;
     delete user.__v;
     console.log(user);
-    // return h.file(user.photo)
-    // return h.file(user.sign)
      return (user);
     
 }
@@ -46,13 +54,6 @@ userController.login = async (request, h) => {
     }
     let token = await userService.generateToken(user._id);
     return {token:token};
-
-
-    //function to generate jwt  
-
-
-   // return (jwt); response send will be JWT
-
 }
 
 userController.register = async (request, h) => {

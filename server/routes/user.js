@@ -73,5 +73,35 @@ const userRoutes = [{
         }
 
     }
+},
+{
+    method: 'GET',
+    path: '/user/userimage/{imagepath}',
+    handler: userController.userImage,
+    options: {
+        tags: ['api'],
+        auth: false,
+        validate: {
+            params: {
+                imagepath: Joi.string()
+            }
+        }
+
+    }
+},
+{
+    method: 'GET',
+    path: '/user/signimage/{signpath}',
+    handler: userController.signImage,
+    options: {
+        tags: ['api'],
+        auth: false,
+        validate: {
+            params: {
+                signpath: Joi.string()
+            }
+        }
+
+    }
 }]
 module.exports = userRoutes;
