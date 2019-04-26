@@ -36,7 +36,7 @@ userService.checkUser = async (userNo) => {
     }
 }
 userService.generateToken=async(payload)=>{
-    var token = jwt.sign({appNo: payload.appNo,password: payload.password }, CONFIG.SERVER.privateKey, { algorithm: 'HS256'} );
+    var token = jwt.sign(payload, CONFIG.SERVER.privateKey, { algorithm: 'HS256'} );
     console.log(token);
     return token;
 }

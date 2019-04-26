@@ -62,13 +62,19 @@ const userRoutes = [{
 {
     method: 'GET',
     path: '/user/login',
-    handler: userController.fetchData,
     options: {
         tags: ['api'],
-        auth: false,
+        auth: 'userAuth',
+        validate: {
+            headers: Joi.object({
+              authorization: Joi.string().required()
+            }),
+        },
+        
        
 
 
-    }
+    },
+    handler: userController.fetchData,
 }]
 module.exports = userRoutes;

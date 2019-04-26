@@ -10,19 +10,22 @@ const bcrypt = require('bcrypt');
 
 let userController = {};
 userController.fetchData= async(request,h)=>{
+    let user = request.user;
+    console.log(user);
+
+
     // funcion to validate token 
     
     
-    var header=request.header;
+    // var header=request.header;
 
      //if validate then rest code 
-    let user = await userService.checkUser(payload.appNo);
+    // let user = await userService.checkUser(payload.appNo);
     delete user.appNo;
     delete user.password;
     delete user._id;
     delete user.__v;
-    console.log(user);
-     return (user);
+    return { statusCode: 200, message: "authorised user",user };
     
 }
 userController.login = async (request, h) => {
@@ -42,8 +45,9 @@ userController.login = async (request, h) => {
     if (!passMatch) {
         return { statusCode: 401, message: " password Entered is not correct" }
     }
-    let token = await userService.generateToken(payload);
-    return token;
+    let token = await userService.generateToken(user._id);
+    console.log(token);   
+    return {token:token};
 
 
     //function to generate jwt  
