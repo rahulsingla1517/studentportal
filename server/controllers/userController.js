@@ -45,9 +45,13 @@ userController.login = async (request, h) => {
     if (!passMatch) {
         return { statusCode: 401, message: " password Entered is not correct" }
     }
-    let token = await userService.generateToken(user._id);
+    try{
+    var token = await userService.generateToken(user._id);
     console.log(token);   
-    return {token:token};
+    }
+    catch(err){
+     console.log(err)}
+     return {token:token};
 
 
     //function to generate jwt  
