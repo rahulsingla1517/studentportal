@@ -6,6 +6,7 @@ const userModel = require('../models/userModel');
 const fs = require('fs');
 const CONFIG = require('../config');
 const bcrypt = require('bcrypt');
+const commonFunctions = require('../utils/commonFunctions')
 
 
 let userController = {};
@@ -20,34 +21,18 @@ userController.signImage=async(request,h)=>{
 
 userController.fetchData= async(request,h)=>{
     let user = request.user;
-    console.log(user);
-
-
-    // funcion to validate token 
-    
-    
-    // var header=request.header;
-
-     //if validate then rest code 
-    // let user = await userService.checkUser(payload.appNo);
-    // let header=request.headers;
-    // console.log(header.token);
-
-    //if validate then rest code 
-    // let user = await userService.checkUser(header.token)
     delete user.appNo;
     delete user.password;
     delete user._id;
     delete user.__v;
-    return { statusCode: 200, message: "authorised user",user };
-    
+ return commonFunctions.sendSuccess(user) ;
 }
 userController.login = async (request, h) => {
     let payload = request.payload;
     console.log(payload);
     let user = await userService.checkUser(payload.appNo);
     if (!user) {
-        return { statusCode: 404, message: "User not found" };
+      return commonFunctions.sendUserNotFound ;
     }
     console.log("user found & password to be checked...");
     let password = payload.password;
@@ -57,7 +42,9 @@ userController.login = async (request, h) => {
     let passMatch = await bcrypt.compareSync(password, hash);
     console.log(passMatch);
     if (!passMatch) {
-        return { statusCode: 401, message: " password Entered is not correct" }
+        console.log("if enteres")
+        return commonFunctions.sendPassWrong ;
+   
     }
     try{
     var token = await userService.generateToken(user._id);
@@ -86,7 +73,8 @@ userController.register = async (request, h) => {
     console.log("emailchecked");
     if (email) {
         console.log("email already in use");
-        return { statusCode: 409, message: "email already registered" };
+        return commonFunctions.sendUserAlreadyRegistered
+     
     }
     console.log("email not in use");
 
@@ -158,8 +146,9 @@ userController.register = async (request, h) => {
     console.log(firstAppNo);
 
     // DATA SEND TO BE SAVED INTO DATABASE
-    let response = await userService.saveData(payload, firstAppNo, imagePath, signPath);
-    return response;
+    let user = await userService.saveData(payload, firstAppNo, imagePath, signPath);
+    return commonFunctions.sendSuccessSave(user); 
+    
 
 }
 module.exports = userController;

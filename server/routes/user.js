@@ -70,7 +70,7 @@ const userRoutes = [{
         validate: {
             headers: Joi.object({
               authorization: Joi.string().required()
-            }),
+            }).unknown(),
         },
         
        

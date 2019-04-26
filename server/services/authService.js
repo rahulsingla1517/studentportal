@@ -6,24 +6,25 @@ const userModel = require('../models/userModel');
 
 let authService = {};
 
-authService.validateUser = async (request, decoded) => {
+authService.validateUser = async (decoded, request) => {
   try {
-      console.log(decoded);
-      // decoded._id = ObjectId(decoded._id)
+    console.log(decoded);
+    // decoded._id = ObjectId(decoded._id)
 
-      let user = await userModel.findOne({ _id: decoded._id }).lean();
-     
-      if (!!user) {
+    let user = await userModel.findOne({ _id: decoded._id }).lean();
+
+    if (!!user) {
       request.user = user;
-      return {isValid: true}
+      return { isValid: true }
     }
-    return {isValid:false}
+    return { isValid: false }
   } catch (error) {
-    return {isValid:false}  }
+    return { isValid: false }
+  }
 },
 
 
 
 
 
-module.exports = authService;
+  module.exports = authService;
