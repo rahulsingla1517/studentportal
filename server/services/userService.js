@@ -40,7 +40,18 @@ userService.generateToken = async (id) => {
     console.log(token);
     return token;
 }
+userService.getFirstAppNo=async()=>{
+    let firstAppNo = await appno.findOne({});
+    return firstAppNo;
+}
+userService.getLastImageNo = async()=>{
+    let lastImageNo = await imageNo.findOne({});
+       return lastImageNo;
+}
+userService.updateLastImageNo=async(lastImageNo,newImageNo)=>{
+    await imageNo.findOneAndUpdate({ imageNo: lastImageNo.imageNo }, { imageNo: newImageNo });
 
+}
 
 userService.enterFirstAppNo = async (num) => {
     let userDataToSave = {
@@ -75,7 +86,7 @@ userService.enterFirstImageNo = async (num) => {
 
         var text = "";
         var length = CONFIG.SERVER.passLength;
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var possible = CONFIG.SERVER.possible;
         for (var i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
@@ -91,7 +102,7 @@ userService.enterFirstImageNo = async (num) => {
             dob: payload.dob,
             gender: payload.gender,
             email: payload.email,
-            password: bcrypt.hashSync(text, 10),
+            password: bcrypt.hashSync(text, CONFIG.SERVER.salt),
             photo: imagePath,
             sign: signPath,
             permanentAdd: {

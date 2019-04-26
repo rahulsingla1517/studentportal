@@ -91,7 +91,8 @@ userController.register = async (request, h) => {
     console.log("email not in use");
 
     // TO CHECK IF APP NO. IS PRESENT IN APP COLLECTION
-    let firstAppNo = await appno.findOne({});
+    let firstAppNo = await userService.getFirstAppNo();
+   
     if (!firstAppNo) {
         firstAppNo = await userService.enterFirstAppNo(CONFIG.SERVER.firstAppNo);
         console.log("app no. is");
@@ -108,7 +109,7 @@ userController.register = async (request, h) => {
     console.log(imgName + " " + sgnName);
     // if (payload.image && payload.sign) {
     // console.log("if reached");
-    let lastImageNo = await imageNo.findOne({});
+    let lastImageNo=await userService.getLastImageNo();
     console.log(lastImageNo);
     if (!lastImageNo) {
         console.log(" imageno does not exist so entering first imageno ...")
@@ -118,7 +119,7 @@ userController.register = async (request, h) => {
     console.log(lastImageNo);
     let newImageNo = lastImageNo.imageNo + CONFIG.SERVER.constant;
     console.log(newImageNo);
-    await imageNo.findOneAndUpdate({ imageNo: lastImageNo.imageNo }, { imageNo: newImageNo });
+    await userService.updateImageNo(lastImageNo,newImageNo);
     let imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
     let signName = newImageNo + sgnName.substr(sgnName.lastIndexOf('.'));
     console.log("name of the file " + "" + imageName + "" + signName);

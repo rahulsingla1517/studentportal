@@ -12,6 +12,8 @@ const SERVER_CONFIG = {
   firstAppNo:100000,
   privateKey:'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc',
   auth:'userAuth',
+  possible:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+  salt:10
 };
 
 module.exports = SERVER_CONFIG;
