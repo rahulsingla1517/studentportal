@@ -1,12 +1,12 @@
 let Joi = require('joi');
 const userController = require('../controllers/userController')
+const CONFIG=require('../config');
 const userRoutes = [{
     method: 'POST',
     path: '/user',
     handler: userController.register,
     options:
     {
-        //  auth: 'token',
         tags: ['api'],
         plugins: {
             'hapi-swagger': {
@@ -66,11 +66,11 @@ const userRoutes = [{
 
     options: {
         tags: ['api'],
-        auth: 'userAuth',
+        auth: CONFIG.SERVER.auth,
         validate: {
             headers: Joi.object({
-              authorization: Joi.string().required()
-            }),
+                authorization: Joi.string().required()
+              }).unknown(),
         },
         
        

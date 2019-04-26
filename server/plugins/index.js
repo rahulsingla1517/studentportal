@@ -21,7 +21,7 @@ let plugins = [
     {
         name:'authentication', 
         register: async(server,options)=>{
-          server.auth.strategy('userAuth','jwt', {
+          server.auth.strategy(CONFIG.SERVER.auth,'jwt', {
             key: CONFIG.SERVER.privateKey,
             validate: authService.validateUser,
             verifyOptions: { algorithms: ['HS256'] }
