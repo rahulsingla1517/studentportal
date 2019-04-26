@@ -16,12 +16,14 @@ userController.fetchData= async(request,h)=>{
     var header=request.header;
 
      //if validate then rest code 
-    let user = await userService.checkUser(payload.appNo);
+    let user = await userService.checkUser(header.appNo)
     delete user.appNo;
     delete user.password;
     delete user._id;
     delete user.__v;
     console.log(user);
+    // return h.file(user.photo)
+    // return h.file(user.sign)
      return (user);
     
 }
@@ -42,8 +44,8 @@ userController.login = async (request, h) => {
     if (!passMatch) {
         return { statusCode: 401, message: " password Entered is not correct" }
     }
-    let token = await userService.generateToken(payload);
-    return token;
+    let token = await userService.generateToken(user._id);
+    return {token:token};
 
 
     //function to generate jwt  

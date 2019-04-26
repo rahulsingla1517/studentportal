@@ -16,23 +16,23 @@ return email existence
 */
 userService.checkEmail = async (email) => {
     try {
-        let emailExit = await userModel.findOne({ email: email });
-        console.log(emailExit);
-        return emailExit;
+        let emailExist = await userModel.findOne({ email: email });
+        console.log(emailExist);
+        return emailExist;
     }
     catch (err) {
-        console.log("email exists")
+        console.log(err)
     }
 }
 userService.checkUser = async (userNo) => {
     try {
         console.log("checkuser reached" + userNo);
-        let userExit = await userModel.findOne({ appNo: userNo }).lean();
-        console.log(userExit);
-        return userExit;
+        let userExist = await userModel.findOne({ appNo: userNo }).lean();
+        console.log(userExist);
+        return userExist;
     }
     catch (err) {
-        console.log("user exists")
+        console.log(err)
     }
 }
 userService.generateToken=async(payload)=>{

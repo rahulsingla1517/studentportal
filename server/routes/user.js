@@ -5,7 +5,7 @@ const userRoutes = [{
     path: '/user',
     handler: userController.register,
     options:
-    {  
+    {
         //  auth: 'token',
         tags: ['api'],
         plugins: {
@@ -18,8 +18,8 @@ const userRoutes = [{
         },
         validate: {
             payload: {
-                image: Joi.any().meta({ swaggerType: 'file' }).description('file').required(),
-                sign: Joi.any().meta({ swaggerType: 'file' }).description('file').required(),
+                image: Joi.any().meta({ swaggerType: 'file' }).description('user image').required(),
+                sign: Joi.any().meta({ swaggerType: 'file' }).description('signature image').required(),
                 name: Joi.string().required(),
                 fatherName: Joi.string().required(),
                 motherName: Joi.string().required(),
@@ -27,7 +27,7 @@ const userRoutes = [{
                 gender: Joi.string().required(),
                 permanentAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
                 tempAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }),
-                email: Joi.string().required(),
+                email: Joi.string().email().required(),
 
             }
         },
@@ -58,7 +58,7 @@ const userRoutes = [{
 
     }
 }
-,
+    ,
 {
     method: 'GET',
     path: '/user/login',
@@ -66,8 +66,11 @@ const userRoutes = [{
     options: {
         tags: ['api'],
         auth: false,
-       
-
+        validate: {
+            headers: Joi.object({
+                'token': Joi.string().required()
+            }).unknown()
+        }
 
     }
 }]
