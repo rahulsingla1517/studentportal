@@ -69,8 +69,8 @@ const userRoutes = [{
         auth: CONFIG.SERVER.auth,
         validate: {
             headers: Joi.object({
-                authorization: Joi.string().required()
-              }).unknown(),
+              authorization: Joi.string().required()
+            }).unknown(),
         },
         
        

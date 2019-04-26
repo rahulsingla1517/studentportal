@@ -7,21 +7,23 @@ let authService = {};
 
 authService.validateUser = async (decoded, request) => {
   try {
-      console.log(decoded);
- console.log(decoded._id);
-      let user = await userModel.findOne({ _id: decoded._id }).lean();
-     
-      if (!!user) {
+    console.log(decoded);
+    // decoded._id = ObjectId(decoded._id)
+
+    let user = await userModel.findOne({ _id: decoded._id }).lean();
+
+    if (!!user) {
       request.user = user;
-      return {isValid: true};
+      return { isValid: true }
     }
-    return {isValid:false}
+    return { isValid: false }
   } catch (error) {
-    return {isValid:false}  }
+    return { isValid: false }
+  }
 },
 
 
 
 
 
-module.exports = authService;
+  module.exports = authService;

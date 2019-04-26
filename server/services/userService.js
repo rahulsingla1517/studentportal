@@ -138,9 +138,7 @@ userService.enterFirstImageNo = async (num) => {
             console.log(err);
         }
         console.log("successful");
-        commonFunctions.sendEmail(emailData);
-        return { statusCode: 200, message: `User registered successfully and its User number and password is send to ${payload.email}`, userDetails: newUser }
-
-
-    }
+        commonFunctions.sendEmail(emailData); 
+        return payload.email ;
+   }
 module.exports = userService;
