@@ -62,8 +62,8 @@ userService.enterFirstImageNo = async (num) => {
     imageNoToSave = {
         imageNo: num
     }
-    let newImageNO = new imageno(imageNoToSave)
-    return await newImageNO.save();
+    let newImageNo = new imageNo(imageNoToSave)
+    return await newImageNo.save();
 },
     userService.saveData = async (payload, lastNo, imagePath, signPath) => {
 

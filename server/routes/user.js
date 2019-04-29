@@ -23,7 +23,7 @@ const userRoutes = [{
                 name: Joi.string().required().description('user name'),
                 fatherName: Joi.string().required().description('user father name'),
                 motherName: Joi.string().required().description('user mother name'),
-                dob: Joi.date().required().description('user Date of birth, format:  yyyy/mm/dd'),
+                dob: Joi.date().required().description('user Date of birth, format:  yyyy-mm-dd'),
                 gender: Joi.string().required().description('user  gender'),
                 permanentAdd: Joi.object({ address: Joi.string().required(), country: Joi.string().required(), city: Joi.string(), state: Joi.string().required(), pincode: Joi.string().required() }).description(` 
                 {
@@ -122,6 +122,6 @@ const userRoutes = [{
         }
 
     },
-    handler: userController.fetchData,
+    handler: userController.signImage,
 }]
 module.exports = userRoutes;

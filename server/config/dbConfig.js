@@ -2,9 +2,9 @@
 
 const DB_CONFIG = {
   protocol: 'mongodb',
-  host: 'localhost',
-  port:  27017,
-  dbName:  'studentPortal',
+  host: process.env.DB_HOST ||'localhost',
+  port:  process.env.DB_PORT || 27017,
+  dbName: process.env.DB_NAME ||  'studentPortal',
   dbUrl: ''
 };
 

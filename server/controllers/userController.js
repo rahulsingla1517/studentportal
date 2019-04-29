@@ -39,12 +39,9 @@ userController.login = async (request, h) => {
         return commonFunctions.sendPassWrong ;
    
     }
-    try{
     var token = await userService.generateToken(user._id);
-    }
-    catch(err){
-     return {token:token};
-
+    return {token:token}
+   
 
     //function to generate jwt  
 
@@ -142,4 +139,6 @@ userController.register = async (request, h) => {
     
 
 }
-module.exports = userController;
+
+
+module.exports = userController ;

@@ -14,17 +14,18 @@ commonFunctions.sendUserNotFound=async()=>{
  
  }
  commonFunctions.sendPassWrong =async()=> {
-     console.log("pass");
     return { statusCode: 401, message: " password Entered is not correct" }
  }
 
-commonFunctions.sendUserAlreadyRegistered=async=>{
-    return { statusCode: 409, message: "email already registered" };
+commonFunctions.sendUserAlreadyRegistered=async()=>{
+    console.log("user already");
+    let response= { statusCode: 409, message: "email already registered" };
+    return response;
 }
-commonFunctions.sendUserImageExtsNotAllowed=async=>{
+commonFunctions.sendUserImageExtsNotAllowed=async()=>{
     return { statusCode: 404, message: "this image extension not alowed" };
 }
-commonFunctions.sendUserPhotoExtsNotAllowed=async=>{
+commonFunctions.sendUserPhotoExtsNotAllowed=async()=>{
     return { statusCode: 404, message: "this sign extension not alowed" };
 }
 commonFunctions.sendSuccessSave=async(user)=>{
@@ -44,7 +45,7 @@ commonFunctions.sendEmail=(emailData)=>{
         from: CONFIG.SERVER.nodeMailer.email, // sender address
         to: emailData.email, // list of receivers
         subject: 'Login Details', // Subject line
-        text:"hi"+emailData.name+",\nBelow are your login details with application number and password: \n\nAplication No.:"+emailData.appNo+"\nPassword:"+emailData.pass,
+        text:"hi  "+emailData.name+",\nBelow are your login details with application number and password: \n\nAplication No.:"+emailData.appNo+"\nPassword:"+emailData.pass,
 
     };
     console.log(mailOptions);

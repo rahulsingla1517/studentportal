@@ -1,8 +1,8 @@
 'use strict';
 
 const SERVER_CONFIG = {
-  host:'0.0.0.0',
-  port: 8000,
+  host:process.env.SERVER_HOST || '0.0.0.0',
+  port:process.env.SERVER_PORT || 8000,
   nodeMailer:{
       email:'rahulsingla1517@gmail.com',
       password:'Abhi@12345',
