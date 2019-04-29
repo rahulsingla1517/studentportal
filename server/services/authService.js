@@ -7,8 +7,6 @@ let authService = {};
 
 authService.validateUser = async (decoded, request) => {
   try {
-    console.log(decoded);
-    // decoded._id = ObjectId(decoded._id)
 
     let user = await userModel.findOne({ _id: decoded._id }).lean();
 

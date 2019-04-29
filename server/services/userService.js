@@ -1,7 +1,7 @@
 
 const userModel = require('../models/userModel')
 const appno = require('../models/appno')
-const imageno = require('../models/imageno')
+const imageNo = require('../models/imageno')
 const bcrypt = require('bcrypt');
 const commonFunctions = require('../utils/commonFunctions');
 const CONFIG = require('../config');
@@ -17,27 +17,23 @@ return email existence
 userService.checkEmail = async (email) => {
     try {
         let emailExist = await userModel.findOne({ email: email });
-        console.log(emailExist);
         return emailExist;
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 userService.checkUser = async (userNo) => {
     try {
-        console.log("checkuser reached" + userNo);
         let userExist = await userModel.findOne({ appNo: userNo }).lean();
-        console.log(userExist);
         return userExist;
     }
     catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 userService.generateToken = async (id) => {
     var token = jwt.sign({_id:id }, CONFIG.SERVER.privateKey, { algorithm: 'HS256' });
-    console.log(token);
     return token;
 }
 userService.getFirstAppNo=async()=>{
@@ -60,7 +56,6 @@ userService.enterFirstAppNo = async (num) => {
 
     let newUser = new appno(userDataToSave);
     let user = await newUser.save();
-    console.log("first appno. in userservice" + user);
     return user;
 }
 userService.enterFirstImageNo = async (num) => {
@@ -69,15 +64,9 @@ userService.enterFirstImageNo = async (num) => {
     }
     let newImageNO = new imageno(imageNoToSave)
     return await newImageNO.save();
-    console.log(" frist image no. is " + " " + imageNum);
 },
     userService.saveData = async (payload, lastNo, imagePath, signPath) => {
 
-        // function getRandomArbitrary(, max) {
-        //     return Math.random() * (max - min) + min;
-        //   }
-
-        // let lastNo =await appno.findOne({});
         let newNo = lastNo.lastNo + CONFIG.SERVER.constant;
         console.log(newNo);
         await appno.findOneAndUpdate({ lastNo: lastNo.lastNo }, { lastNo: newNo });
@@ -137,7 +126,6 @@ userService.enterFirstImageNo = async (num) => {
         } catch (err) {
             console.log(err);
         }
-        console.log("successful");
         commonFunctions.sendEmail(emailData); 
         return payload.email ;
    }

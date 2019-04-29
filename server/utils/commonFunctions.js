@@ -21,7 +21,12 @@ commonFunctions.sendUserNotFound=async()=>{
 commonFunctions.sendUserAlreadyRegistered=async=>{
     return { statusCode: 409, message: "email already registered" };
 }
-
+commonFunctions.sendUserImageExtsNotAllowed=async=>{
+    return { statusCode: 404, message: "this image extension not alowed" };
+}
+commonFunctions.sendUserPhotoExtsNotAllowed=async=>{
+    return { statusCode: 404, message: "this sign extension not alowed" };
+}
 commonFunctions.sendSuccessSave=async(user)=>{
    return  { statusCode: 200, message: `User registered successfully and its User number and password is send to ${user}` }
 

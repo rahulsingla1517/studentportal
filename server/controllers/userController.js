@@ -1,8 +1,6 @@
 
 const userService = require('../services/userService');
-const imageNo = require('../models/imageno');
-const appno = require('../models/appno');
-const userModel = require('../models/userModel');
+
 const fs = require('fs');
 const CONFIG = require('../config');
 const bcrypt = require('bcrypt');
@@ -29,29 +27,22 @@ userController.fetchData= async(request,h)=>{
 }
 userController.login = async (request, h) => {
     let payload = request.payload;
-    console.log(payload);
     let user = await userService.checkUser(payload.appNo);
     if (!user) {
       return commonFunctions.sendUserNotFound ;
     }
-    console.log("user found & password to be checked...");
     let password = payload.password;
     let hash = user.password;
-    console.log(password + hash)
 
     let passMatch = await bcrypt.compareSync(password, hash);
-    console.log(passMatch);
     if (!passMatch) {
-        console.log("if enteres")
         return commonFunctions.sendPassWrong ;
    
     }
     try{
     var token = await userService.generateToken(user._id);
-    console.log(token);   
     }
     catch(err){
-     console.log(err)}
      return {token:token};
 
 
@@ -63,57 +54,57 @@ userController.login = async (request, h) => {
 }
 
 userController.register = async (request, h) => {
-    console.log("usercontroller reached");
     let payload = request.payload;
 
     // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
 
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
-    console.log("emailchecked");
     if (email) {
-        console.log("email already in use");
         return commonFunctions.sendUserAlreadyRegistered
      
     }
-    console.log("email not in use");
 
     // TO CHECK IF APP NO. IS PRESENT IN APP COLLECTION
     let firstAppNo = await userService.getFirstAppNo();
    
     if (!firstAppNo) {
         firstAppNo = await userService.enterFirstAppNo(CONFIG.SERVER.firstAppNo);
-        console.log("app no. is");
-        console.log(firstAppNo);
+    
     }
-    console.log("app no. is exist");
-    console.log(firstAppNo);
     //  FUNCTION TO SAVE IMAGE AND SIGN INTO UPLOADS FOLDER
 
-    console.log('uploadfile function reached');
-    // console.log(payload);
+
     let imgName = payload.image.hapi.filename;
     let sgnName = payload.sign.hapi.filename;
-    console.log(imgName + " " + sgnName);
-    // if (payload.image && payload.sign) {
-    // console.log("if reached");
+    
     let lastImageNo=await userService.getLastImageNo();
-    console.log(lastImageNo);
     if (!lastImageNo) {
-        console.log(" imageno does not exist so entering first imageno ...")
         lastImageNo = await userService.enterFirstImageNo(CONFIG.SERVER.constant);
-        console.log("first imageno. entered");
     }
-    console.log(lastImageNo);
     let newImageNo = lastImageNo.imageNo + CONFIG.SERVER.constant;
-    console.log(newImageNo);
-    await userService.updateImageNo(lastImageNo,newImageNo);
+    await userService.updateLastImageNo(lastImageNo,newImageNo);
+    var allowedExts= ['.jpeg', '.jpg', '.png'];
+    let imageExtsExit=allowedExts.includes(imgName.substr(imgName.lastIndexOf('.')));
+    if(!imageExtsExit)
+    {
+        return commonFunctions.sendUserImageExtsNotAllowed;
+    }
+    let photoExtsExit=allowedExts.includes(sgnName.substr(sgnName.lastIndexOf('.')));
+    if(!photoExtsExit)
+    {
+        return commonFunctions.sendUserPhotoExtsNotAllowed;
+    }
+
     let imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));
     let signName = newImageNo + sgnName.substr(sgnName.lastIndexOf('.'));
-    console.log("name of the file " + "" + imageName + "" + signName);
     let imagePath = __dirname + "/imageUploads/" + imageName;
+    
     let signPath = __dirname + "/signUploads/" + signName;
-    console.log(imagePath + signName);
+
+
+    
+
     let imageFile = fs.createWriteStream(imagePath);
     let signFile = fs.createWriteStream(signPath);
 
@@ -144,7 +135,6 @@ userController.register = async (request, h) => {
 
 
 
-    console.log(firstAppNo);
 
     // DATA SEND TO BE SAVED INTO DATABASE
     let user = await userService.saveData(payload, firstAppNo, imagePath, signPath);

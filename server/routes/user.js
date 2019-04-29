@@ -18,8 +18,8 @@ const userRoutes = [{
         },
         validate: {
             payload: {
-                image: Joi.any().meta({ swaggerType: 'file' }).description('upload user image  any of these types:-   .jpg/.jpeg/.png  ,  size:-   min=40 kb,max=300kb').required(),
-                sign: Joi.any().meta({ swaggerType: 'file' }).description('upload signature image  any of these types:- .jpg/.jpeg/.png,size:-   min=10kb,max=40kb  ').required(),
+                image: Joi.any().meta({ swaggerType: 'file' }).description('upload user image  any of these types:-   .jpg/.jpeg/.png  ,  size:- max=400kb').required(),
+                sign: Joi.any().meta({ swaggerType: 'file' }).description('upload signature image  any of these types:- .jpg/.jpeg/.png,size:- max=400kb  ').required(),
                 name: Joi.string().required().description('user name'),
                 fatherName: Joi.string().required().description('user father name'),
                 motherName: Joi.string().required().description('user mother name'),
@@ -49,7 +49,7 @@ const userRoutes = [{
         },
         payload: {
 
-
+            maxBytes: 1000 * 400, 
             output: 'stream',
             parse: true,
             allow: 'multipart/form-data'
