@@ -29,14 +29,14 @@ userController.login = async (request, h) => {
     let payload = request.payload;
     let user = await userService.checkUser(payload.appNo);
     if (!user) {
-      return commonFunctions.sendUserNotFound ;
+      return await commonFunctions.sendUserNotFound() ;
     }
     let password = payload.password;
     let hash = user.password;
 
     let passMatch = await bcrypt.compareSync(password, hash);
     if (!passMatch) {
-        return commonFunctions.sendPassWrong ;
+        return await commonFunctions.sendPassWrong() ;
    
     }
     var token = await userService.generateToken(user._id);
@@ -52,14 +52,17 @@ userController.login = async (request, h) => {
 
 userController.register = async (request, h) => {
     let payload = request.payload;
+    console.log(payload);
 
     // TO CHECK IF ATLEAST ONE USER IS PRESENT IN DB
 
     // TO CHECK IF EMAIL IS NOT ALREADY USED 
     let email = await userService.checkEmail(payload.email);
-    if (email) {
-        return commonFunctions.sendUserAlreadyRegistered
-     
+    console.log(email);
+    if (!!email) {
+        console.log("user");
+        let response =await commonFunctions.sendUserAlreadyRegistered();
+         return response;
     }
 
     // TO CHECK IF APP NO. IS PRESENT IN APP COLLECTION
@@ -85,12 +88,12 @@ userController.register = async (request, h) => {
     let imageExtsExit=allowedExts.includes(imgName.substr(imgName.lastIndexOf('.')));
     if(!imageExtsExit)
     {
-        return commonFunctions.sendUserImageExtsNotAllowed;
+        return await commonFunctions.sendUserImageExtsNotAllowed();
     }
     let photoExtsExit=allowedExts.includes(sgnName.substr(sgnName.lastIndexOf('.')));
     if(!photoExtsExit)
     {
-        return commonFunctions.sendUserPhotoExtsNotAllowed;
+        return await commonFunctions.sendUserPhotoExtsNotAllowed();
     }
 
     let imageName = newImageNo + imgName.substr(imgName.lastIndexOf('.'));

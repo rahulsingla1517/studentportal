@@ -20,7 +20,7 @@ userService.checkEmail = async (email) => {
         return emailExist;
     }
     catch (err) {
-        console.log(err);
+        return err;
     }
 }
 userService.checkUser = async (userNo) => {
@@ -29,7 +29,7 @@ userService.checkUser = async (userNo) => {
         return userExist;
     }
     catch (err) {
-        console.log(err);
+        return err;
     }
 }
 userService.generateToken = async (id) => {

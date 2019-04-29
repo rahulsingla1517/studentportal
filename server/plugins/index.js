@@ -1,6 +1,5 @@
 const CONFIG = require('../config');
 const authService=require('../services/authService');
-// const jwt = require('hapi-auth-jwt');
 
 
 
